@@ -22,6 +22,7 @@ export class TvApp extends LitElement {
       name: { type: String },
       source: { type: String },
       listings: { type: Array },
+      activeChannel: { type: Object },
     };
   }
   // LitElement convention for applying styles JUST to our element
@@ -30,8 +31,8 @@ export class TvApp extends LitElement {
       css`
       :host {
         display: block;
-        margin: 16px;
-        padding: 16px;
+        margin: 6px;
+        padding: 6px;
       }
       `
     ];
@@ -52,28 +53,65 @@ export class TvApp extends LitElement {
           `
         )
       }
+      ${this.discordUrl
+      ? html`
+          <div>
+            <!-- Discord Widget (embed URL) -->
+          </div>
+        `
+      : ''}
       <div>
         <!-- video -->
         <!-- discord / chat - optional -->
       </div>
       <!-- dialog -->
       <sl-dialog label="Dialog" class="dialog">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        <sl-button slot="footer" variant="primary" @click="${this.closeDialog}">Close</sl-button>
+      <h3>${this.activeChannel ? this.activeChannel.title : ''}</h3>
+      <p>${this.activeChannel ? this.activeChannel.presenter : ''}</p>
+      <!-- Add YouTube video player here -->
+      <button @click="${this.watchVideo}">Watch</button>
       </sl-dialog>
+      <tv-channel-list @watch-channel="${this.watchChannel}"></tv-channel-list>
     `;
   }
 
-  closeDialog(e) {
-    const dialog = this.shadowRoot.querySelector('.dialog');
-    dialog.hide();
+// Add a method to close the dialog
+closeDialog() {
+  const dialog = this.shadowRoot.querySelector('.dialog');
+  dialog.hide();
+}
+
+// change itemClick
+  itemClick(e) {
+    const channel = e.target;
+  this.activeChannel = { title: channel.title, presenter: channel.presenter };
+  this.openDialog();
   }
 
-  itemClick(e) {
-    console.log(e.target);
-    const dialog = this.shadowRoot.querySelector('.dialog');
-    dialog.show();
+watchChannel(e) {
+  const { title, description, videoLink } = e.detail;
+  this.activeChannel = { title, description, videoLink };
+  this.closeDialog();
   }
+
+  watchVideo() {
+    // Assuming you have a video player component
+    const videoPlayer = this.shadowRoot.querySelector('#video-player'); // Adjust the selector as needed
+    videoPlayer.play(this.activeChannel.videoLink);
+  
+    // Update description below the video
+    const descriptionElement = this.shadowRoot.querySelector('#video-description'); // Adjust the selector as needed
+    descriptionElement.textContent = this.activeChannel.description;
+  
+    // Close the modal
+    this.closeDialog();
+  }
+  
+  // Add a method to open the dialog
+openDialog() {
+  const dialog = this.shadowRoot.querySelector('.dialog');
+  dialog.show();
+}
 
   // LitElement life cycle for when any property changes
   updated(changedProperties) {
