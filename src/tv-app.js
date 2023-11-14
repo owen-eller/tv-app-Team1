@@ -105,11 +105,14 @@ export class TvApp extends LitElement {
               <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
             </div>
       </div>
-      <!-- dialog -->
-      <sl-dialog label="Dialog" class="dialog">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      
+      <sl-dialog label="${this.activeItem.title}" class="dialog">
+      <p>
+      ${this.activeItem.description}
+    </p>
         <sl-button slot="footer" variant="primary" @click="${this.closeDialog}">Close</sl-button>
       </sl-dialog>
+    <
     `;
   }
 
