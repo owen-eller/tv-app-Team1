@@ -15,6 +15,7 @@ export class TvApp extends LitElement {
       title: null,
       id: null,
       description: null,
+      author: null,
     };
   }
   // convention I enjoy using to define the tag's name
@@ -152,9 +153,9 @@ export class TvApp extends LitElement {
     ${this.activeItem.description}
   </p>
   </tv-channel>
-    </div>
+  </div>
     
-  <sl-dialog label="${this.activeItem.title}" class="dialog">
+  <sl-dialog label="${this.activeItem.title}" presenter=${this.activeItem.author} class="dialog">
       <p>
       ${this.activeItem.description}
     </p>
