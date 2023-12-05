@@ -15,7 +15,7 @@ export class TvApp extends LitElement {
       title: null,
       id: null,
       description: null,
-      author: null,
+      presenter: null,
     };
   }
   // convention I enjoy using to define the tag's name
@@ -61,9 +61,7 @@ export class TvApp extends LitElement {
         line-height: 1.5;
         font-size: 1em;
       }
-      h5 {
-        font-weight: 400;
-      }
+      
       .discord {
         display: inline-flex;
       }
@@ -79,7 +77,7 @@ export class TvApp extends LitElement {
  
         .player-container {
           border-radius: 8px;
-          padding: 12px;
+          padding: 8px;
           display: flex;
           width: 66%;
         }
@@ -148,14 +146,14 @@ export class TvApp extends LitElement {
     </div>
     
   <div>
-    <tv-channel title=${this.activeItem.title} presenter=${this.activeItem.author}>
+    <tv-channel title=${this.activeItem.title} presenter=${this.activeItem.presenter}>
     <p id= "description">
     ${this.activeItem.description}
   </p>
   </tv-channel>
   </div>
     
-  <sl-dialog label="${this.activeItem.title}" presenter=${this.activeItem.author} class="dialog">
+  <sl-dialog label="${this.activeItem.title}" presenter=${this.activeItem.presenter} class="dialog">
       <p>
       ${this.activeItem.description}
     </p>
@@ -195,6 +193,7 @@ export class TvApp extends LitElement {
       id: e.target.id,
       description: e.target.description,
       video: e.target.video,
+      presenter: e.target.presenter,
     };
     this.changeVideo(); // Call changeVideo 
     const dialog = this.shadowRoot.querySelector('.dialog');
