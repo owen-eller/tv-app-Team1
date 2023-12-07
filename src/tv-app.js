@@ -2,6 +2,7 @@
 import { LitElement, html, css } from 'lit';
 import '@shoelace-style/shoelace/dist/components/dialog/dialog.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import "@lrnwebcomponents/video-player/video-player.js";
 import "./tv-channel.js";
 
 export class TvApp extends LitElement {
@@ -131,11 +132,8 @@ export class TvApp extends LitElement {
       <div class="main-content">
       <div class="player-container">
         <!-- video -->
-        <iframe class="player"
-          src="${this.createSource()}"
-          frameborder="0"
-          allowfullscreen>
-        </iframe>
+        <video-player class="player" source=${this.createSource} accent-color="orange" dark track="https://haxtheweb.org/files/HAXshort.vtt">
+</video-player>
     </div>
     
       <!-- discord  -->
@@ -160,13 +158,13 @@ export class TvApp extends LitElement {
       <p>${this.activeItem.description}</p>
       <sl-button slot="footer" variant="primary" @click="${this.closeDialog}">WATCH</sl-button>
   </sl-dialog>
-    
     `;
   }
-
+  
   changeVideo() {
-    const iframe = this.shadowRoot.querySelector('iframe');
-    iframe.src = this.createSource();
+    const videoPlayer = this.shadowRoot.querySelector('video-player');
+    videoPlayer.src = this.createSource();
+    
   }
   extractVideoId(link) {
     try {
@@ -185,6 +183,7 @@ export class TvApp extends LitElement {
   closeDialog(e) {
     const dialog = this.shadowRoot.querySelector('.dialog');
     dialog.hide();
+    this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').play()
   }
 
   itemClick(e) {
