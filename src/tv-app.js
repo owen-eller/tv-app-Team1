@@ -146,20 +146,21 @@ export class TvApp extends LitElement {
     </div>
     
   <div>
-    <tv-channel title=${this.activeItem.title} presenter=${this.activeItem.presenter}>
-    <p id= "description">
+    <tv-channel title=${this.activeItem.title}>
+    <h5>${this.activeItem.presenter}</h5>
+    <p>
     ${this.activeItem.description}
   </p>
   </tv-channel>
   </div>
     
-  <sl-dialog label="${this.activeItem.title}" presenter=${this.activeItem.presenter} class="dialog">
-      <p>
-      ${this.activeItem.description}
-    </p>
-      <sl-button slot="footer" variant="primary" @click="${this.closeDialog}">Close</sl-button>
-      </sl-dialog>
-    </p>
+  <sl-dialog class="dialog">
+      <h2>${this.activeItem.title}</h2>
+      <h4>${this.activeItem.presenter}</h4>
+      <p>${this.activeItem.description}</p>
+      <sl-button slot="footer" variant="primary" @click="${this.closeDialog}">WATCH</sl-button>
+  </sl-dialog>
+    
     `;
   }
 
