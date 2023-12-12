@@ -30,7 +30,7 @@ export class TvChannel extends LitElement {
         text-rendering: optimizeLegibility;
         box-sizing: inherit;
         display: inline-block;
-        line-height: 1.2;
+        line-height: 1;
         font-size: 1em;
         font-weight: 400;
         min-width: 300px;
@@ -43,8 +43,8 @@ export class TvChannel extends LitElement {
       .wrapper {
         margin: .5rem;
         padding: .5rem;
-        padding-left: 16px;
-        padding-right: 16px;
+        padding-left: 8px;
+        padding-right: 8px;
         border-radius: 6px;
         border-color: #4a4a4a;
         box-shadow: 0px 0px 0px 1px #dbdbdb;
@@ -59,7 +59,7 @@ export class TvChannel extends LitElement {
   render() {
     return html`
       <div class="wrapper">
-        <h4>${this.title}</h4>
+        <h2>${this.title}</h2>
         <p>${this.description}</p>
         <slot></slot>
       </div>  
