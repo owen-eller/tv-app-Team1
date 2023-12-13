@@ -17,12 +17,14 @@ export class TvApp extends LitElement {
       id: null,
       description: null,
       presenter: null,
+      timecode: null,
     };
     this.nextItem = {
       title: null,
       id: null,
       description: null,
       presenter: null,
+      timecode: null,
     };
   }
   // convention I enjoy using to define the tag's name
@@ -58,8 +60,8 @@ export class TvApp extends LitElement {
         flex-wrap: nowrap;
         overflow-x: auto;
         overflow-y: auto;
-        padding-left: .5rem;
-        padding-right: .5rem;
+        padding-left: 4px;
+        padding-right: 4px;
         text-rendering: optimizeLegibility;
         width: 100%;
         margin: 0 auto;
@@ -96,7 +98,6 @@ export class TvApp extends LitElement {
       .discord widgetbot {
         display: inline-block;
         overflow: hidden;
-        background-color: rgb(54, 57, 62);
         border-radius: 8px;
         vertical-align: top;
         width: 100%;
@@ -109,9 +110,15 @@ export class TvApp extends LitElement {
       }
       .description {
         border-radius: 8px;
-        padding: 8px;
+        padding: 4px;
         display: flex;
         width: 100%;
+      }
+      .dialog {
+        border-radius: 8px;
+        padding: 4px;
+        display: flex;
+        margin: 0 auto;
       }
       `,
     ];
@@ -119,7 +126,7 @@ export class TvApp extends LitElement {
   // LitElement rendering template of your element
   render() {
     return html`
-       <h2>${this.name}</h2>
+       <h1>${this.name}</h1>
       <div class="listing-container">
       ${this.listings.map(
       (item) => html`
@@ -129,6 +136,7 @@ export class TvApp extends LitElement {
               description="${item.description}"
               @click="${this.itemClick}"
               video="${item.metadata.source}"
+              timecode="${item.metadata.timecode}"
             >
             </tv-channel>
           `
@@ -137,13 +145,13 @@ export class TvApp extends LitElement {
       </div>
     <div class="main-content">
     <div class="player-container">
-        <!-- video -->
-        <video-player 
+    <!-- video -->
+      <video-player 
           class="player"
           source="${this.createSource()}" 
           accent-color="orange" 
           dark track="https://haxtheweb.org/files/HAXshort.vtt">
-        </video-player>
+      </video-player>
     </div>
     
     <!-- discord  -->
@@ -156,7 +164,8 @@ export class TvApp extends LitElement {
   <!-- description -->
   <div>
     <tv-channel class="description">
-    <h2>${this.nextItem.title}</h2>
+    <p>${this.activeItem.timecode}</p>
+    <h2>${this.activeItem.title}</h2>
     <h3>${this.activeItem.presenter}</h3>
     <p>${this.activeItem.description}</p>
   </tv-channel>
@@ -164,10 +173,11 @@ export class TvApp extends LitElement {
     
   <!-- dialog -->
   <sl-dialog class="dialog">
-      <h2>${this.nextItem.title}</h2>
-      <h3>${this.nextItem.presenter}</h3>
-      <p>${this.nextItem.description}</p>
-      <sl-button slot="footer" variant="primary" @click="${this.watchVideo}">WATCH</sl-button>
+    <p>${this.nextItem.timecode}</p>
+    <h2>${this.nextItem.title}</h2>
+    <h3>${this.nextItem.presenter}</h3>
+    <p>${this.nextItem.description}</p>
+    <sl-button slot="footer" variant="primary" @click="${this.watchVideo}">WATCH</sl-button>
   </sl-dialog>
     `;
   }
@@ -209,6 +219,7 @@ export class TvApp extends LitElement {
       description: e.target.description,
       video: e.target.video,
       presenter: e.target.presenter,
+      timecode: e.target.timecode,
     };
     const dialog = this.shadowRoot.querySelector('.dialog');
     dialog.show();
