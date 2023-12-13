@@ -12,6 +12,7 @@ export class TvApp extends LitElement {
     this.name = '';
     this.source = new URL('../assets/channels.json', import.meta.url).href;
     this.listings = [];
+    this.defaultVideo = 'https://www.youtube.com/watch?v=9MT-BNuUCpM';
     this.activeItem = {
       title: null,
       id: null,
@@ -70,6 +71,7 @@ export class TvApp extends LitElement {
         animation-duration: 1s;
         line-height: 1;
         font-size: 1em;
+        cursor: pointer;
       }
       .middle-page{
         display: inline-flex;
@@ -84,11 +86,15 @@ export class TvApp extends LitElement {
           padding: 8px;
           display: flex;
           width: 66%;
+          height: auto;
+          
       }
       .player {
         width: 100%;
         aspect-ratio: 16/9;
         border-radius: 8px;
+        height: auto;
+        
       }
       .discord {
         width: 33%;
@@ -110,16 +116,27 @@ export class TvApp extends LitElement {
       }
       .description {
         border-radius: 8px;
-        padding: 4px;
+        padding: 8px;
         display: flex;
         width: 100%;
+        margin: 4px;
       }
       .dialog {
         border-radius: 8px;
-        padding: 4px;
+        padding: 8px;
         display: flex;
-        margin: 0 auto;
+
       }
+      
+    @media screen and (max-width: 768px) {
+      .main-content {
+      flex-direction: column; 
+      }
+      .player-container, .description, .discord {
+        width: 100%; 
+        height: 100%;
+      }
+    }
       `,
     ];
   }
@@ -183,9 +200,9 @@ export class TvApp extends LitElement {
   }
 
   changeVideo() {
-    const iframe = this.shadowRoot.querySelector('video-player').querySelector('iframe');
-    iframe.src = this.createSource();
-    this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').play();
+    const videoPlayer = this.shadowRoot.querySelector('video-player');
+    videoPlayer.source = this.createSource();
+    this.shadowRoot.querySelector('video-player').shadowRoot.querySelector('a11y-media-player').play()
   }
   
   extractVideoId(link) {
@@ -200,7 +217,9 @@ export class TvApp extends LitElement {
   }
 
   createSource() {
-    return "https://www.youtube.com/embed/" + this.extractVideoId(this.activeItem.video);
+    return this.activeItem.video
+      ? `https://www.youtube.com/embed/${this.extractVideoId(this.activeItem.video)}`
+      : this.defaultVideo;
   }
 
   watchVideo(e)

@@ -41,6 +41,7 @@ export class TvChannel extends LitElement {
         transition: all 0.25s ease-in-out;
         overflow: hidden;
         text-overflow: ellipsis;
+        cursor: pointer;
       }
       .wrapper {
         margin: 8px;
